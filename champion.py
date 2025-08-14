@@ -6,7 +6,8 @@ class Champion:
     def __init__(self, x, y, size=50):
         self.pos = pygame.math.Vector2(x, y)
         self.rect = pygame.Rect(x - size // 2, y - size // 2, size, size)
-        self.color = (0, 0, 255)  # Blue
+        self.image = pygame.image.load("champion.png")
+        self.image = pygame.transform.scale(self.image, (size, size))
         self.speed = PLAYER_SPEED
         self.target_pos = None
 
@@ -25,4 +26,4 @@ class Champion:
             self.rect.center = self.pos
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.image, self.rect)
