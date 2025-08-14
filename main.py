@@ -27,30 +27,8 @@ class Projectile:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.rect.center, 5)
 
-class Player:
-    def __init__(self, x, y, size=50):
-        self.pos = pygame.math.Vector2(x, y)
-        self.rect = pygame.Rect(x - size // 2, y - size // 2, size, size)
-        self.color = (0, 0, 255)  # Blue
-        self.speed = 3
-        self.target_pos = None
 
-    def move_to(self, pos):
-        self.target_pos = pygame.math.Vector2(pos)
-
-    def update(self):
-        if self.target_pos:
-            direction = self.target_pos - self.pos
-            if direction.length() <= self.speed:
-                self.pos = self.target_pos
-                self.target_pos = None
-            else:
-                direction.normalize_ip()
-                self.pos += direction * self.speed
-            self.rect.center = self.pos
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+from champion import Champion
 
 def main():
     pygame.init()
@@ -60,7 +38,7 @@ def main():
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("MOBA Game")
 
-    player = Player(screen_width // 2, screen_height // 2)
+    player = Champion(screen_width // 2, screen_height // 2)
     projectiles = []
     minions = [Minion(100, 100), Minion(700, 100), Minion(100, 500), Minion(700, 500)]
 
