@@ -43,6 +43,7 @@
     "blue_image": "src/assets/images/blue_tower.png",
     "red_image": "src/assets/images/red_tower.png",
     "size": 100,
+    "respawn_offset": { "x": 50, "y": 0 },
     "locations": [
       { "x": 100, "y": 512, "team": "blue" },
       { "x": 1436, "y": 512, "team": "red" }

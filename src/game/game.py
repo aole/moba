@@ -23,6 +23,7 @@ class Game:
         self.projectiles = []
         self.towers = []
         self.running = True
+        self.winner = None
 
         self._create_buttons()
 
@@ -59,12 +60,19 @@ class Game:
         self.running = False
 
     def setup_game(self):
-        self.player = Champion(self.screen_width // 2, self.screen_height // 2, 'blue')
+        blue_tower_pos = None
+        for tower_config in config.tower.locations:
+            if tower_config['team'] == 'blue':
+                blue_tower_pos = pygame.math.Vector2(tower_config['x'], tower_config['y'])
+                break
+
+        self.player = Champion(self.screen_width // 2, self.screen_height // 2, 'blue', blue_tower_pos)
         self.minions = []
         self.projectiles = []
         self.towers = []
         self.last_gold_tick = pygame.time.get_ticks()
         self.state = GameState.PLAYING
+        self.winner = None
         self.spawn_minions(2, 'blue')
         self.spawn_minions(2, 'red')
         for tower_config in config.tower.locations:
@@ -121,7 +129,12 @@ class Game:
         if self.state != GameState.PLAYING:
             return
 
-        self.player.update()
+        if self.player.is_dead:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.player.death_time >= 5000:
+                self.player.respawn()
+        else:
+            self.player.update()
 
         # Passive gold generation
         current_time = pygame.time.get_ticks()
@@ -172,10 +185,12 @@ class Game:
                             if projectile.source == self.player.team: # Gold for last hit
                                 self.player.gold += config.minion.minion_last_hit_gold
                         elif isinstance(entity, Champion):
-                            self.state = GameState.GAME_OVER
+                            if not entity.is_dead:
+                                entity.die()
                         elif isinstance(entity, Tower):
                             self.towers.remove(entity)
-                            # Potentially end the game or grant a large amount of gold
+                            self.state = GameState.GAME_OVER
+                            self.winner = 'blue' if entity.team == 'red' else 'red'
                     break # Projectile hits one entity at a time
 
     def draw(self, screen):
@@ -193,7 +208,8 @@ class Game:
             self.draw_game_over_screen(screen)
 
     def draw_playing_screen(self, screen):
-        self.player.draw(screen)
+        if not self.player.is_dead:
+            self.player.draw(screen)
         for minion in self.minions:
             minion.draw(screen)
         for projectile in self.projectiles:
@@ -243,7 +259,11 @@ class Game:
             button.draw(screen)
 
     def draw_game_over_screen(self, screen):
-        title_text = self.font.render("Game Over", True, (255, 0, 0))
+        if self.winner:
+            win_text = f"{self.winner.capitalize()} Team Wins!"
+        else:
+            win_text = "Game Over"
+        title_text = self.font.render(win_text, True, (255, 255, 255))
         title_rect = title_text.get_rect(center=(self.screen_width / 2, 200))
         screen.blit(title_text, title_rect)
 

@@ -3,7 +3,7 @@ from .config import config
 from .entity import Entity
 
 class Champion(Entity):
-    def __init__(self, x, y, team, size=config.champion.size):
+    def __init__(self, x, y, team, tower_pos, size=config.champion.size):
         super().__init__(
             x, y, size, config.champion.image,
             health=config.champion.health,
@@ -16,6 +16,14 @@ class Champion(Entity):
         self.speed = config.champion.speed
         self.attack_speed = config.champion.attack_speed
         self.target_pos = None
+        self.is_dead = False
+        self.death_time = None
+        self.start_pos = pygame.math.Vector2(x, y)
+        if tower_pos:
+            offset = pygame.math.Vector2(config.tower.respawn_offset.x, config.tower.respawn_offset.y)
+            self.respawn_pos = tower_pos + offset
+        else:
+            self.respawn_pos = self.start_pos
 
     def move_to(self, pos):
         self.target_pos = pygame.math.Vector2(pos)
@@ -35,3 +43,16 @@ class Champion(Entity):
         super().draw(screen)
         if config.debug.champion_range_visible:
             pygame.draw.circle(screen, (255, 255, 255), self.rect.center, config.champion.attack_range, 1)
+
+    def die(self):
+        self.is_dead = True
+        self.death_time = pygame.time.get_ticks()
+        self.health = 0
+
+    def respawn(self):
+        self.is_dead = False
+        self.death_time = None
+        self.health = self.max_health
+        self.pos = self.respawn_pos.copy()
+        self.rect.center = self.pos
+        self.target_pos = None
