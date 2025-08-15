@@ -1,8 +1,8 @@
 import pygame
-from champion import Champion
-from minion import Minion
-from projectile import Projectile
-from config import config
+from .champion import Champion
+from .minion import Minion
+from .projectile import Projectile
+from .config import config
 
 class Game:
     def __init__(self, screen_width, screen_height):

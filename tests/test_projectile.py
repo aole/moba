@@ -1,5 +1,5 @@
 import pygame
-from projectile import Projectile
+from game.projectile import Projectile
 
 def test_projectile_creation():
     """Test that a Projectile can be created."""
