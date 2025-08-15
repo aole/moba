@@ -151,6 +151,10 @@ class Game:
         entities = self.minions + self.towers + [self.player]
         for projectile in list(self.projectiles):
             projectile.update()
+            if projectile.should_be_removed:
+                self.projectiles.remove(projectile)
+                continue
+                
             if not self.screen_rect.colliderect(projectile.rect):
                 if projectile in self.projectiles:
                     self.projectiles.remove(projectile)

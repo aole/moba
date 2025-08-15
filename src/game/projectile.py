@@ -12,6 +12,7 @@ class Projectile:
         self.color = tuple(color or config.projectile.color)
         self.is_homing = is_homing
         self.rect = pygame.Rect(self.pos.x - self.size // 2, self.pos.y - self.size // 2, self.size, self.size)
+        self.should_be_removed = False
 
         direction = self.target.pos - self.pos
         if direction.length() > 0:
