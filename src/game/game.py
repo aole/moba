@@ -60,7 +60,13 @@ class Game:
         self.running = False
 
     def setup_game(self):
-        self.player = Champion(self.screen_width // 2, self.screen_height // 2, 'blue')
+        blue_tower_pos = None
+        for tower_config in config.tower.locations:
+            if tower_config['team'] == 'blue':
+                blue_tower_pos = pygame.math.Vector2(tower_config['x'], tower_config['y'])
+                break
+
+        self.player = Champion(self.screen_width // 2, self.screen_height // 2, 'blue', blue_tower_pos)
         self.minions = []
         self.projectiles = []
         self.towers = []

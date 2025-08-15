@@ -11,7 +11,7 @@ def mock_pygame_image_load(mocker):
 
 def test_champion_creation(mock_pygame_image_load):
     """Test that a Champion can be created."""
-    champion = Champion(100, 100, 'blue')
+    champion = Champion(100, 100, 'blue', pygame.math.Vector2(0, 0))
     assert champion.pos == pygame.math.Vector2(100, 100)
     assert champion.rect.center == (100, 100)
     assert champion.target_pos is None
@@ -19,13 +19,13 @@ def test_champion_creation(mock_pygame_image_load):
 
 def test_champion_move_to(mock_pygame_image_load):
     """Test that move_to sets the target position."""
-    champion = Champion(100, 100, 'blue')
+    champion = Champion(100, 100, 'blue', pygame.math.Vector2(0, 0))
     champion.move_to((200, 200))
     assert champion.target_pos == pygame.math.Vector2(200, 200)
 
 def test_champion_update_movement(mock_pygame_image_load):
     """Test that the champion moves towards the target position."""
-    champion = Champion(0, 0, 'blue')
+    champion = Champion(0, 0, 'blue', pygame.math.Vector2(0, 0))
     champion.speed = 1
     champion.move_to((10, 0))
 
@@ -37,7 +37,7 @@ def test_champion_update_movement(mock_pygame_image_load):
 
 def test_champion_reaches_destination(mock_pygame_image_load):
     """Test that the champion stops when it reaches the target destination."""
-    champion = Champion(0, 0, 'blue')
+    champion = Champion(0, 0, 'blue', pygame.math.Vector2(0, 0))
     champion.speed = 5
     champion.move_to((10, 0))
 
@@ -99,4 +99,4 @@ def test_champion_respawn(mocker, mock_pygame_image_load):
     game.update()
     assert player.is_dead is False
     assert player.health == player.max_health
-    assert player.pos == player.start_pos
+    assert player.pos == player.respawn_pos
