@@ -2,12 +2,15 @@ import pytest
 from src.game.champion import Champion
 from src.game.game import Game
 from src.game.config import config
+from src.game.state import GameState
 import pygame
 
 @pytest.fixture
 def game():
     pygame.init()
     game = Game(800, 600)
+    game.setup_game()
+    game.state = GameState.PLAYING
     return game
 
 class TestGoldSystem:

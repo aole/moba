@@ -1,12 +1,14 @@
 import pygame
-from game.game import Game
-from game.minion import Minion
-from game.projectile import Projectile
+from src.game.game import Game
+from src.game.minion import Minion
+from src.game.projectile import Projectile
+from src.game.state import GameState
 
 def test_projectile_off_screen():
     """Test that a projectile is removed when it goes off-screen."""
     pygame.init()
     game = Game(800, 600)
+    game.setup_game()
     game.projectiles = []
 
     # Create a projectile that is already off-screen
@@ -18,6 +20,7 @@ def test_projectile_off_screen():
 
     assert len(game.projectiles) == 1
 
+    game.state = GameState.PLAYING
     game.update()
 
     assert len(game.projectiles) == 0
@@ -27,6 +30,7 @@ def test_projectile_damages_minion():
     """Test that a projectile damages a minion and removes it when health is depleted."""
     pygame.init()
     game = Game(800, 600)
+    game.setup_game()
     game.minions = []
     game.projectiles = []
     # Disable automatic minion spawning for this test

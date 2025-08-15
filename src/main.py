@@ -16,12 +16,11 @@ def main():
     font = pygame.font.Font(config.game.font_path, 36)
 
     clock = pygame.time.Clock()
-    running = True
-    while running:
+    while game.running:
         clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                game.exit_game()
             game.handle_input(event)
 
         game.update()
