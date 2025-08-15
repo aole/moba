@@ -14,7 +14,8 @@ class Tower(Entity):
         super().__init__(
             x, y, size, image_path,
             health=config.tower.health,
-            attack_damage=config.tower.attack_damage
+            attack_damage=config.tower.attack_damage,
+            team=self.team
         )
         self.pos = pygame.math.Vector2(x, y)
         self.last_attack_time = 0

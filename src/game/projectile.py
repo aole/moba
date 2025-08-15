@@ -12,13 +12,10 @@ class Projectile:
         self.color = tuple(color or config.projectile.color)
         self.rect = pygame.Rect(self.pos.x - self.size // 2, self.pos.y - self.size // 2, self.size, self.size)
 
-        if self.source == 'player':
-            direction = self.target.pos - self.pos
-            if direction.length() > 0:
-                direction.normalize_ip()
-            self.velocity = direction * self.speed
-        else:
-            self.velocity = pygame.math.Vector2(0, 0)
+        direction = self.target.pos - self.pos
+        if direction.length() > 0:
+            direction.normalize_ip()
+        self.velocity = direction * self.speed
 
     def update(self):
         if self.source == 'minion' or self.source in ['blue', 'red']:
