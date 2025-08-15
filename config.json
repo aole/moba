@@ -1,11 +1,11 @@
 {
   "champion": {
-    "speed": 5,
+    "speed": 3,
     "image": "champion.png",
     "size": 50
   },
   "projectile": {
-    "speed": 10,
+    "speed": 20,
     "color": [255, 0, 0],
     "size": 10
   },
