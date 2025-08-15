@@ -29,8 +29,20 @@
   "game": {
     "background_image": "src/assets/images/arena.png"
   },
+  "tower": {
+    "health": 500,
+    "attack_damage": 5,
+    "attack_range": 300,
+    "attack_interval": 2000,
+    "projectile_speed": 15,
+    "projectile_size": 12,
+    "projectile_color": [255, 0, 255],
+    "blue_image": "src/assets/images/blue_tower.png",
+    "red_image": "src/assets/images/red_tower.png"
+  },
   "debug": {
     "minion_range_visible": true,
-    "champion_range_visible": true
+    "champion_range_visible": true,
+    "tower_range_visible": true
   }
 }
