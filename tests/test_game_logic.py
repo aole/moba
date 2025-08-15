@@ -33,6 +33,7 @@ def test_projectile_damages_minion():
     game.spawn_minions = lambda x, y: None
 
     minion = Minion(100, 100, 'red')
+    minion.speed = 0 # Prevent minion from moving during test
     initial_health = minion.health
     game.minions.append(minion)
 
