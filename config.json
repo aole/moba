@@ -18,7 +18,12 @@
     "size": 40,
     "health": 10,
     "attack_damage": 1,
-    "minion_last_hit_gold": 10
+    "minion_last_hit_gold": 10,
+    "attack_range": 150,
+    "attack_interval": 3000,
+    "projectile_speed": 10,
+    "projectile_size": 8,
+    "projectile_color": [0, 255, 0]
   },
   "game": {
     "background_image": "src/assets/images/arena.png"

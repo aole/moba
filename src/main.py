@@ -30,6 +30,10 @@ def main():
         gold_text = font.render(f"Gold: {game.player.gold}", True, (255, 255, 0))
         screen.blit(gold_text, (10, 10))
 
+        # Draw the health display
+        health_text = font.render(f"Health: {game.player.health}", True, (255, 0, 0))
+        screen.blit(health_text, (10, 50))
+
         pygame.display.flip()
 
     pygame.quit()

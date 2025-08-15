@@ -2,21 +2,33 @@ import pygame
 from .config import config
 
 class Projectile:
-    def __init__(self, pos, target_pos, attack_damage):
+    def __init__(self, pos, target, attack_damage, source, speed=None, size=None, color=None):
         self.pos = pygame.math.Vector2(pos)
-        self.speed = config.projectile.speed
+        self.target = target
         self.attack_damage = attack_damage
-        direction = pygame.math.Vector2(target_pos) - self.pos
-        if direction.length() > 0:
-            direction.normalize_ip()
-        self.velocity = direction * self.speed
-        size = config.projectile.size
-        self.rect = pygame.Rect(self.pos.x - size // 2, self.pos.y - size // 2, size, size)
-        self.color = tuple(config.projectile.color)
+        self.source = source
+        self.speed = speed or config.projectile.speed
+        self.size = size or config.projectile.size
+        self.color = tuple(color or config.projectile.color)
+        self.rect = pygame.Rect(self.pos.x - self.size // 2, self.pos.y - self.size // 2, self.size, self.size)
+
+        if self.source == 'player':
+            direction = self.target.pos - self.pos
+            if direction.length() > 0:
+                direction.normalize_ip()
+            self.velocity = direction * self.speed
+        else:
+            self.velocity = pygame.math.Vector2(0, 0)
 
     def update(self):
+        if self.source == 'minion':
+            direction = self.target.pos - self.pos
+            if direction.length() > 0:
+                direction.normalize_ip()
+            self.velocity = direction * self.speed
+
         self.pos += self.velocity
         self.rect.center = self.pos
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, self.rect.center, 5)
+        pygame.draw.circle(screen, self.color, self.rect.center, self.size // 2)
