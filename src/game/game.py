@@ -47,7 +47,7 @@ class Game:
             class Target:
                 def __init__(self, pos):
                     self.pos = pos
-            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage))
+            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage, 'player'))
 
     def update(self):
         if self.game_over:
@@ -77,27 +77,25 @@ class Game:
                     self.projectiles.remove(projectile)
                 continue
 
-            # Check collision with minions
-            for minion in list(self.minions):
-                if projectile.rect.colliderect(minion.rect):
-                    minion.health -= projectile.attack_damage
-                    if minion.health <= 0:
-                        self.minions.remove(minion)
-                        self.player.gold += config.minion.minion_last_hit_gold
+            if projectile.source == 'player':
+                # Check collision with minions
+                for minion in list(self.minions):
+                    if projectile.rect.colliderect(minion.rect):
+                        minion.health -= projectile.attack_damage
+                        if minion.health <= 0:
+                            self.minions.remove(minion)
+                            self.player.gold += config.minion.minion_last_hit_gold
+                        if projectile in self.projectiles:
+                            self.projectiles.remove(projectile)
+                        break
+            elif projectile.source == 'minion':
+                # Check collision with player
+                if projectile.rect.colliderect(self.player.rect):
+                    self.player.health -= projectile.attack_damage
                     if projectile in self.projectiles:
                         self.projectiles.remove(projectile)
-                    break
-
-            if projectile not in self.projectiles:
-                continue
-
-            # Check collision with player
-            if projectile.rect.colliderect(self.player.rect):
-                self.player.health -= projectile.attack_damage
-                if projectile in self.projectiles:
-                    self.projectiles.remove(projectile)
-                if self.player.health <= 0:
-                    self.game_over = True
+                    if self.player.health <= 0:
+                        self.game_over = True
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))

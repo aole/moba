@@ -6,7 +6,7 @@ def test_projectile_creation():
     class Target:
         def __init__(self, pos):
             self.pos = pos
-    projectile = Projectile(pygame.math.Vector2(100, 100), Target(pygame.math.Vector2(200, 100)), attack_damage=1)
+    projectile = Projectile(pygame.math.Vector2(100, 100), Target(pygame.math.Vector2(200, 100)), 1, 'player')
     projectile.update()
     assert projectile.velocity.x > 0
     assert projectile.velocity.y == 0
@@ -17,7 +17,7 @@ def test_projectile_update():
     class Target:
         def __init__(self, pos):
             self.pos = pos
-    projectile = Projectile(pygame.math.Vector2(0, 0), Target(pygame.math.Vector2(10, 0)), attack_damage=1)
+    projectile = Projectile(pygame.math.Vector2(0, 0), Target(pygame.math.Vector2(10, 0)), 1, 'player')
     projectile.speed = 5
 
     # Update position and check

@@ -20,4 +20,4 @@ class Minion(Entity):
         if distance_to_champion <= config.minion.attack_range:
             if current_time - self.last_attack_time > config.minion.attack_interval:
                 self.last_attack_time = current_time
-                projectiles.append(Projectile(self.pos.copy(), champion, self.attack_damage, config.minion.projectile_speed, config.minion.projectile_size, config.minion.projectile_color))
+                projectiles.append(Projectile(self.pos.copy(), champion, self.attack_damage, 'minion', config.minion.projectile_speed, config.minion.projectile_size, config.minion.projectile_color))
