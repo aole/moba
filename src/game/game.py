@@ -3,6 +3,7 @@ import random
 from .champion import Champion
 from .minion import Minion
 from .projectile import Projectile
+from .tower import Tower
 from .config import config
 
 class Game:
@@ -18,15 +19,19 @@ class Game:
         self.small_font = pygame.font.Font(None, 36)
         self.game_over = False
         self.projectiles = []
+        self.towers = []
         self.setup_game()
 
     def setup_game(self):
         self.player = Champion(self.screen_width // 2, self.screen_height // 2)
         self.minions = []
         self.projectiles = []
+        self.towers = []
         self.last_gold_tick = pygame.time.get_ticks()
         self.game_over = False
         self.spawn_minions(4)
+        self.towers.append(Tower(100, self.screen_height // 2, 'blue'))
+        self.towers.append(Tower(self.screen_width - 100, self.screen_height // 2, 'red'))
 
     def spawn_minions(self, number):
         for _ in range(number):
@@ -65,6 +70,10 @@ class Game:
         for minion in self.minions:
             minion.update(self.player, self.projectiles)
 
+        # Update towers
+        for tower in self.towers:
+            tower.update(self.player, self.projectiles)
+
         # Ensure at least 2 minions are alive
         if len(self.minions) < 2:
             self.spawn_minions(2 - len(self.minions))
@@ -88,7 +97,7 @@ class Game:
                         if projectile in self.projectiles:
                             self.projectiles.remove(projectile)
                         break
-            elif projectile.source == 'minion':
+            elif projectile.source == 'minion' or projectile.source in ['blue', 'red']:
                 # Check collision with player
                 if projectile.rect.colliderect(self.player.rect):
                     self.player.health -= projectile.attack_damage
@@ -107,6 +116,8 @@ class Game:
                 minion.draw(screen)
             for projectile in self.projectiles:
                 projectile.draw(screen)
+            for tower in self.towers:
+                tower.draw(screen)
 
 
 

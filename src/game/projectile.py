@@ -21,7 +21,7 @@ class Projectile:
             self.velocity = pygame.math.Vector2(0, 0)
 
     def update(self):
-        if self.source == 'minion':
+        if self.source == 'minion' or self.source in ['blue', 'red']:
             direction = self.target.pos - self.pos
             if direction.length() > 0:
                 direction.normalize_ip()
