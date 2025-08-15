@@ -97,7 +97,7 @@ class Game:
                         if projectile in self.projectiles:
                             self.projectiles.remove(projectile)
                         break
-            elif projectile.source == 'minion':
+            elif projectile.source == 'minion' or projectile.source in ['blue', 'red']:
                 # Check collision with player
                 if projectile.rect.colliderect(self.player.rect):
                     self.player.health -= projectile.attack_damage
