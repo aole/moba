@@ -38,3 +38,16 @@ def test_tower_projectile_movement():
 
     assert projectile.pos.x > initial_pos.x
     assert projectile.pos.y == initial_pos.y
+
+def test_minion_projectile_movement():
+    """Test that a projectile from a minion moves correctly."""
+    class Target:
+        def __init__(self, pos):
+            self.pos = pos
+    projectile = Projectile(pygame.math.Vector2(100, 100), Target(pygame.math.Vector2(200, 100)), 1, 'minion', speed=10)
+
+    initial_pos = projectile.pos.copy()
+    projectile.update()
+
+    assert projectile.pos.x > initial_pos.x
+    assert projectile.pos.y == initial_pos.y
