@@ -23,21 +23,25 @@ class Game:
         self.setup_game()
 
     def setup_game(self):
-        self.player = Champion(self.screen_width // 2, self.screen_height // 2)
+        self.player = Champion(self.screen_width // 2, self.screen_height // 2, 'blue')
         self.minions = []
         self.projectiles = []
         self.towers = []
         self.last_gold_tick = pygame.time.get_ticks()
         self.game_over = False
-        self.spawn_minions(4)
+        self.spawn_minions(2, 'blue')
+        self.spawn_minions(2, 'red')
         self.towers.append(Tower(100, self.screen_height // 2, 'blue'))
         self.towers.append(Tower(self.screen_width - 100, self.screen_height // 2, 'red'))
 
-    def spawn_minions(self, number):
+    def spawn_minions(self, number, team):
         for _ in range(number):
-            x = random.randint(50, self.screen_width - 50)
+            if team == 'blue':
+                x = random.randint(50, self.screen_width // 2 - 100)
+            else: # red
+                x = random.randint(self.screen_width // 2 + 100, self.screen_width - 50)
             y = random.randint(50, self.screen_height - 50)
-            self.minions.append(Minion(x, y))
+            self.minions.append(Minion(x, y, team))
 
     def handle_input(self, event):
         if self.game_over:
@@ -74,9 +78,14 @@ class Game:
         for tower in self.towers:
             tower.update(self.player, self.projectiles)
 
-        # Ensure at least 2 minions are alive
-        if len(self.minions) < 2:
-            self.spawn_minions(2 - len(self.minions))
+        # Ensure at least 1 minion of each team is alive
+        blue_minions = sum(1 for m in self.minions if m.team == 'blue')
+        red_minions = sum(1 for m in self.minions if m.team == 'red')
+
+        if blue_minions == 0:
+            self.spawn_minions(1, 'blue')
+        if red_minions == 0:
+            self.spawn_minions(1, 'red')
 
         # Update projectiles and check for collisions
         for projectile in list(self.projectiles):

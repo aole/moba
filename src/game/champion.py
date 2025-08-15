@@ -3,11 +3,12 @@ from .config import config
 from .entity import Entity
 
 class Champion(Entity):
-    def __init__(self, x, y, size=config.champion.size):
+    def __init__(self, x, y, team, size=config.champion.size):
         super().__init__(
             x, y, size, config.champion.image,
             health=config.champion.health,
             attack_damage=config.champion.attack_damage,
+            team=team,
             center_aligned=True
         )
         self.gold = config.champion.starting_gold

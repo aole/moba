@@ -4,11 +4,12 @@ from .entity import Entity
 from .projectile import Projectile
 
 class Minion(Entity):
-    def __init__(self, x, y, size=config.minion.size):
+    def __init__(self, x, y, team, size=config.minion.size):
         super().__init__(
             x, y, size, config.minion.image,
             health=config.minion.health,
-            attack_damage=config.minion.attack_damage
+            attack_damage=config.minion.attack_damage,
+            team=team
         )
         self.pos = pygame.math.Vector2(x, y)
         self.last_attack_time = 0

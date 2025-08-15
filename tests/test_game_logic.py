@@ -30,9 +30,9 @@ def test_projectile_damages_minion():
     game.minions = []
     game.projectiles = []
     # Disable automatic minion spawning for this test
-    game.spawn_minions = lambda x: None
+    game.spawn_minions = lambda x, y: None
 
-    minion = Minion(100, 100)
+    minion = Minion(100, 100, 'red')
     initial_health = minion.health
     game.minions.append(minion)
 
