@@ -4,7 +4,7 @@ from .entity import Entity
 from .projectile import Projectile
 
 class Tower(Entity):
-    def __init__(self, x, y, team, size=100):
+    def __init__(self, x, y, team):
         self.team = team
         if self.team == 'blue':
             image_path = config.tower.blue_image
@@ -12,10 +12,11 @@ class Tower(Entity):
             image_path = config.tower.red_image
 
         super().__init__(
-            x, y, size, image_path,
+            x, y, config.tower.size, image_path,
             health=config.tower.health,
             attack_damage=config.tower.attack_damage,
-            team=self.team
+            team=self.team,
+            center_aligned=True
         )
         self.pos = pygame.math.Vector2(x, y)
         self.last_attack_time = 0
