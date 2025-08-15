@@ -1,5 +1,6 @@
 import pygame
 from .game.game import Game
+from .game.config import config
 
 def main():
     pygame.init()
@@ -12,7 +13,7 @@ def main():
     game = Game(screen_width, screen_height)
 
     # Font for text rendering
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(config.game.font_path, 36)
 
     clock = pygame.time.Clock()
     running = True

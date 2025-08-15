@@ -27,7 +27,8 @@
     "projectile_color": [0, 255, 0]
   },
   "game": {
-    "background_image": "src/assets/images/arena.png"
+    "background_image": "src/assets/images/arena.png",
+    "font_path": "src/assets/DreamhourRegular-lxJpq.ttf"
   },
   "tower": {
     "health": 500,

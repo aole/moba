@@ -15,8 +15,8 @@ class Game:
         self.background = pygame.image.load(config.game.background_image)
         self.background = pygame.transform.scale(self.background, (self.screen_width, self.screen_height))
 
-        self.font = pygame.font.Font(None, 74)
-        self.small_font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(config.game.font_path, 74)
+        self.small_font = pygame.font.Font(config.game.font_path, 36)
         self.game_over = False
         self.projectiles = []
         self.towers = []
