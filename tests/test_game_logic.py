@@ -5,11 +5,15 @@ from game.projectile import Projectile
 
 def test_projectile_off_screen():
     """Test that a projectile is removed when it goes off-screen."""
+    pygame.init()
     game = Game(800, 600)
     game.projectiles = []
 
     # Create a projectile that is already off-screen
-    projectile = Projectile((-20, -20), (-30, -30), attack_damage=1)
+    class Target:
+        def __init__(self, pos):
+            self.pos = pos
+    projectile = Projectile(pygame.math.Vector2(-20, -20), Target(pygame.math.Vector2(-30, -30)), attack_damage=1)
     game.projectiles.append(projectile)
 
     assert len(game.projectiles) == 1
@@ -21,16 +25,22 @@ def test_projectile_off_screen():
 
 def test_projectile_damages_minion():
     """Test that a projectile damages a minion and removes it when health is depleted."""
+    pygame.init()
     game = Game(800, 600)
     game.minions = []
     game.projectiles = []
+    # Disable automatic minion spawning for this test
+    game.spawn_minions = lambda x: None
 
     minion = Minion(100, 100)
     initial_health = minion.health
     game.minions.append(minion)
 
     # The champion's attack damage is from the config, so the projectile will have that damage
-    projectile = Projectile((90, 100), (100, 100), attack_damage=game.player.attack_damage)
+    class Target:
+        def __init__(self, pos):
+            self.pos = pos
+    projectile = Projectile(pygame.math.Vector2(90, 100), Target(pygame.math.Vector2(100, 100)), attack_damage=game.player.attack_damage)
     projectile.rect = pygame.Rect(95, 95, 10, 10) # Ensure collision
     game.projectiles.append(projectile)
 
@@ -47,8 +57,10 @@ def test_projectile_damages_minion():
     for i in range(1, hits_to_kill):
         if minion not in game.minions:
             break
-
-        projectile = Projectile((90, 100), (100, 100), attack_damage=game.player.attack_damage)
+        class Target:
+            def __init__(self, pos):
+                self.pos = pos
+        projectile = Projectile(pygame.math.Vector2(90, 100), Target(pygame.math.Vector2(100, 100)), attack_damage=game.player.attack_damage)
         projectile.rect = pygame.Rect(95, 95, 10, 10)
         game.projectiles.append(projectile)
         game.update()
