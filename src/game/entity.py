@@ -3,7 +3,12 @@ import pygame
 class Entity:
     def __init__(self, x, y, size, image_path, health, attack_damage, team=None, center_aligned=False):
         self.image = pygame.image.load(image_path)
-        self.image = pygame.transform.scale(self.image, (size, size))
+        original_width = self.image.get_width()
+        original_height = self.image.get_height()
+        aspect_ratio = original_height / original_width
+        new_width = size
+        new_height = int(new_width * aspect_ratio)
+        self.image = pygame.transform.scale(self.image, (new_width, new_height))
         if center_aligned:
             self.rect = self.image.get_rect(center=(x, y))
         else:

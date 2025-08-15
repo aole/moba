@@ -40,7 +40,12 @@
     "projectile_size": 12,
     "projectile_color": [255, 0, 255],
     "blue_image": "src/assets/images/blue_tower.png",
-    "red_image": "src/assets/images/red_tower.png"
+    "red_image": "src/assets/images/red_tower.png",
+    "size": 100,
+    "locations": [
+      { "x": 100, "y": 512, "team": "blue" },
+      { "x": 1436, "y": 512, "team": "red" }
+    ]
   },
   "debug": {
     "minion_range_visible": true,

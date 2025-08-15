@@ -31,8 +31,8 @@ class Game:
         self.game_over = False
         self.spawn_minions(2, 'blue')
         self.spawn_minions(2, 'red')
-        self.towers.append(Tower(100, self.screen_height // 2, 'blue'))
-        self.towers.append(Tower(self.screen_width - 100, self.screen_height // 2, 'red'))
+        for tower_config in config.tower.locations:
+            self.towers.append(Tower(tower_config['x'], tower_config['y'], tower_config['team']))
 
     def spawn_minions(self, number, team):
         for _ in range(number):
