@@ -20,17 +20,25 @@ class Tower(Entity):
         self.pos = pygame.math.Vector2(x, y)
         self.last_attack_time = 0
 
-    def update(self, target, projectiles):
-        if not target:
-            return
+    def update(self, entities, projectiles):
+        closest_enemy = None
+        min_distance = float('inf')
 
-        distance_to_target = self.pos.distance_to(target.pos)
-        current_time = pygame.time.get_ticks()
+        # Target prioritization: Minions first, then Champions
+        # In this implementation, we simply find the closest enemy.
+        # A more advanced implementation could prioritize minions.
+        for entity in entities:
+            if entity.team != self.team:
+                distance = self.pos.distance_to(entity.pos)
+                if distance < min_distance:
+                    min_distance = distance
+                    closest_enemy = entity
 
-        if distance_to_target <= config.tower.attack_range:
+        if closest_enemy and min_distance <= config.tower.attack_range:
+            current_time = pygame.time.get_ticks()
             if current_time - self.last_attack_time > config.tower.attack_interval:
                 self.last_attack_time = current_time
-                projectiles.append(Projectile(self.pos.copy(), target, self.attack_damage, self.team, config.tower.projectile_speed, config.tower.projectile_size, config.tower.projectile_color))
+                projectiles.append(Projectile(self.pos.copy(), closest_enemy, self.attack_damage, self.team, config.tower.projectile_speed, config.tower.projectile_size, config.tower.projectile_color))
 
     def draw(self, screen):
         super().draw(screen)
