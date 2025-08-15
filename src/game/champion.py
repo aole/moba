@@ -10,6 +10,7 @@ class Champion(Entity):
             attack_damage=config.champion.attack_damage,
             center_aligned=True
         )
+        self.gold = config.champion.starting_gold
         self.pos = pygame.math.Vector2(x, y)
         self.speed = config.champion.speed
         self.target_pos = None

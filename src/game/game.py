@@ -16,6 +16,7 @@ class Game:
         self.player = Champion(screen_width // 2, screen_height // 2)
         self.projectiles = []
         self.minions = [Minion(100, 100), Minion(700, 100), Minion(100, 500), Minion(700, 500)]
+        self.last_gold_tick = pygame.time.get_ticks()
 
     def handle_input(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:  # Right-click
@@ -26,6 +27,12 @@ class Game:
 
     def update(self):
         self.player.update()
+
+        # Passive gold generation
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_gold_tick > 1000:
+            self.player.gold += config.champion.gold_per_second
+            self.last_gold_tick = current_time
 
         # Update projectiles and check for collisions
         for projectile in self.projectiles[:]:
@@ -38,6 +45,7 @@ class Game:
                         minion.health -= projectile.attack_damage
                         if minion.health <= 0:
                             self.minions.remove(minion)
+                            self.player.gold += config.minion.minion_last_hit_gold
                         self.projectiles.remove(projectile)
                         break
 
