@@ -1,7 +1,7 @@
 import pygame
 
 class Entity:
-    def __init__(self, x, y, size, image_path, health, center_aligned=False):
+    def __init__(self, x, y, size, image_path, health, attack_damage, center_aligned=False):
         self.image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(self.image, (size, size))
         if center_aligned:
@@ -10,6 +10,7 @@ class Entity:
             self.rect = self.image.get_rect(topleft=(x, y))
         self.max_health = health
         self.health = health
+        self.attack_damage = attack_damage
 
     def draw(self, screen):
         # Draw health bar
