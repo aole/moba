@@ -28,7 +28,7 @@
   },
   "game": {
     "background_image": "src/assets/images/arena.png",
-    "font_path": "src/assets/Dunwich_Ink.otf"
+    "font_path": "src/assets/chp-fire.ttf"
   },
   "tower": {
     "health": 500,
