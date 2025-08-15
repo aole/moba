@@ -5,6 +5,7 @@
     "size": 50,
     "health": 100,
     "attack_damage": 2,
+    "attack_speed": 1.5,
     "attack_range": 200,
     "starting_gold": 100,
     "gold_per_second": 1

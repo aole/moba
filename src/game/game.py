@@ -117,6 +117,7 @@ class Game:
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
+
         if self.game_over:
             self.draw_game_over(screen)
         else:
@@ -127,8 +128,27 @@ class Game:
                 projectile.draw(screen)
             for tower in self.towers:
                 tower.draw(screen)
+            self.draw_status_bar(screen)
 
+    def draw_status_bar(self, screen):
+        # Define the stats to display
+        stats = [
+            f"Gold: {self.player.gold}",
+            f"Health: {self.player.health}",
+            f"Attack Damage: {self.player.attack_damage}",
+            f"Attack Speed: {self.player.attack_speed}"
+        ]
 
+        # Starting position for the first stat
+        start_x = 10
+        y = 10
+        padding = 20  # Pixels between stats
+
+        # Render and blit each stat
+        for stat in stats:
+            text_surface = self.small_font.render(stat, True, (255, 255, 255))
+            screen.blit(text_surface, (start_x, y))
+            start_x += text_surface.get_width() + padding
 
     def draw_game_over(self, screen):
         text = self.font.render("Game Over", True, (255, 0, 0))
