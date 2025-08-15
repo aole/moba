@@ -1,12 +1,11 @@
 import pygame
 from .config import config
+from .entity import Entity
 
-class Champion:
+class Champion(Entity):
     def __init__(self, x, y, size=config.champion.size):
+        super().__init__(x, y, size, config.champion.image, center_aligned=True)
         self.pos = pygame.math.Vector2(x, y)
-        self.rect = pygame.Rect(x - size // 2, y - size // 2, size, size)
-        self.image = pygame.image.load(config.champion.image)
-        self.image = pygame.transform.scale(self.image, (size, size))
         self.speed = config.champion.speed
         self.target_pos = None
 
@@ -23,6 +22,3 @@ class Champion:
                 direction.normalize_ip()
                 self.pos += direction * self.speed
             self.rect.center = self.pos
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)

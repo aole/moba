@@ -1,11 +1,7 @@
 import pygame
 from .config import config
+from .entity import Entity
 
-class Minion:
+class Minion(Entity):
     def __init__(self, x, y, size=config.minion.size):
-        self.rect = pygame.Rect(x, y, size, size)
-        self.image = pygame.image.load(config.minion.image)
-        self.image = pygame.transform.scale(self.image, (size, size))
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        super().__init__(x, y, size, config.minion.image)
