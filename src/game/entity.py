@@ -1,7 +1,7 @@
 import pygame
 
 class Entity:
-    def __init__(self, x, y, size, image_path, health, attack_damage, center_aligned=False):
+    def __init__(self, x, y, size, image_path, health, attack_damage, team=None, center_aligned=False):
         self.image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(self.image, (size, size))
         if center_aligned:
@@ -11,6 +11,7 @@ class Entity:
         self.max_health = health
         self.health = health
         self.attack_damage = attack_damage
+        self.team = team
 
     def draw(self, screen):
         # Draw health bar
@@ -22,9 +23,13 @@ class Entity:
         health_percentage = self.health / self.max_health
         current_health_width = health_bar_width * health_percentage
 
+        health_bar_color = (255, 0, 0) # Default red
+        if self.team == 'blue':
+            health_bar_color = (0, 0, 255)
+
         # Health bar background
         pygame.draw.rect(screen, (128, 128, 128), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
         # Current health
-        pygame.draw.rect(screen, (255, 0, 0), (health_bar_x, health_bar_y, current_health_width, health_bar_height))
+        pygame.draw.rect(screen, health_bar_color, (health_bar_x, health_bar_y, current_health_width, health_bar_height))
 
         screen.blit(self.image, self.rect)
