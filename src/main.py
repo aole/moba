@@ -11,6 +11,9 @@ def main():
 
     game = Game(screen_width, screen_height)
 
+    # Font for text rendering
+    font = pygame.font.Font(None, 36)
+
     clock = pygame.time.Clock()
     running = True
     while running:
@@ -22,6 +25,10 @@ def main():
 
         game.update()
         game.draw(screen)
+
+        # Draw the gold display
+        gold_text = font.render(f"Gold: {game.player.gold}", True, (255, 255, 0))
+        screen.blit(gold_text, (10, 10))
 
         pygame.display.flip()
 

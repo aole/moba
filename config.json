@@ -4,7 +4,9 @@
     "image": "src/assets/images/champion.png",
     "size": 50,
     "health": 100,
-    "attack_damage": 2
+    "attack_damage": 2,
+    "starting_gold": 100,
+    "gold_per_second": 1
   },
   "projectile": {
     "speed": 20,
@@ -15,7 +17,8 @@
     "image": "src/assets/images/minion.png",
     "size": 40,
     "health": 10,
-    "attack_damage": 1
+    "attack_damage": 1,
+    "minion_last_hit_gold": 10
   },
   "game": {
     "background_image": "src/assets/images/arena.png"
