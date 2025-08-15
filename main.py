@@ -12,7 +12,7 @@ class Minion:
 class Projectile:
     def __init__(self, pos, target_pos):
         self.pos = pygame.math.Vector2(pos)
-        self.speed = 10
+        self.speed = 5
         direction = pygame.math.Vector2(target_pos) - self.pos
         if direction.length() > 0:
             direction.normalize_ip()
@@ -42,8 +42,10 @@ def main():
     projectiles = []
     minions = [Minion(100, 100), Minion(700, 100), Minion(100, 500), Minion(700, 500)]
 
+    clock = pygame.time.Clock()
     running = True
     while running:
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

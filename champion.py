@@ -1,6 +1,6 @@
 import pygame
 
-PLAYER_SPEED = 0.1
+PLAYER_SPEED = 5
 
 class Champion:
     def __init__(self, x, y, size=50):
