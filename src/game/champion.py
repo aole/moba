@@ -14,6 +14,7 @@ class Champion(Entity):
         self.gold = config.champion.starting_gold
         self.pos = pygame.math.Vector2(x, y)
         self.speed = config.champion.speed
+        self.attack_speed = config.champion.attack_speed
         self.target_pos = None
 
     def move_to(self, pos):
