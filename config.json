@@ -15,6 +15,7 @@
     "size": 10
   },
   "minion": {
+    "speed": 2,
     "image": "src/assets/images/minion.png",
     "size": 40,
     "health": 10,
