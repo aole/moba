@@ -28,3 +28,8 @@ class Champion(Entity):
                 direction.normalize_ip()
                 self.pos += direction * self.speed
             self.rect.center = self.pos
+
+    def draw(self, screen):
+        super().draw(screen)
+        if config.debug.champion_range_visible:
+            pygame.draw.circle(screen, (255, 255, 255), self.rect.center, config.champion.attack_range, 1)
