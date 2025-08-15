@@ -1,5 +1,5 @@
 import pygame
-from config import config
+from .config import config
 
 class Projectile:
     def __init__(self, pos, target_pos):

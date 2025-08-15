@@ -1,6 +1,6 @@
 import pygame
 import pytest
-from champion import Champion
+from game.champion import Champion
 
 @pytest.fixture
 def mock_pygame_image_load(mocker):
@@ -14,7 +14,7 @@ def test_champion_creation(mock_pygame_image_load):
     assert champion.pos == pygame.math.Vector2(100, 100)
     assert champion.rect.center == (100, 100)
     assert champion.target_pos is None
-    mock_pygame_image_load.assert_called_once_with("champion.png")
+    mock_pygame_image_load.assert_called_once_with("src/assets/images/champion.png")
 
 def test_champion_move_to(mock_pygame_image_load):
     """Test that move_to sets the target position."""

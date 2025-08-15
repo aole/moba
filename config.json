@@ -1,7 +1,7 @@
 {
   "champion": {
     "speed": 3,
-    "image": "champion.png",
+    "image": "src/assets/images/champion.png",
     "size": 50
   },
   "projectile": {
@@ -10,10 +10,10 @@
     "size": 10
   },
   "minion": {
-    "image": "minion.png",
+    "image": "src/assets/images/minion.png",
     "size": 40
   },
   "game": {
-    "background_image": "arena.png"
+    "background_image": "src/assets/images/arena.png"
   }
 }

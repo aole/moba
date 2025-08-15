@@ -1,5 +1,5 @@
 import pygame
-from config import config
+from .config import config
 
 class Champion:
     def __init__(self, x, y, size=config.champion.size):

@@ -1,7 +1,7 @@
 import pygame
-from game import Game
-from minion import Minion
-from projectile import Projectile
+from game.game import Game
+from game.minion import Minion
+from game.projectile import Projectile
 
 def test_projectile_minion_collision():
     """Test that a projectile and a minion are removed upon collision."""
