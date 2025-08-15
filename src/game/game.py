@@ -56,7 +56,7 @@ class Game:
             class Target:
                 def __init__(self, pos):
                     self.pos = pos
-            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage, self.player.team))
+            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage, self.player.team, is_homing=False))
 
     def update(self):
         if self.game_over:
