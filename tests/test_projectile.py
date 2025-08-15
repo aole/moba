@@ -17,8 +17,7 @@ def test_projectile_update():
     class Target:
         def __init__(self, pos):
             self.pos = pos
-    projectile = Projectile(pygame.math.Vector2(0, 0), Target(pygame.math.Vector2(10, 0)), 1, 'player')
-    projectile.speed = 5
+    projectile = Projectile(pygame.math.Vector2(0, 0), Target(pygame.math.Vector2(10, 0)), 1, 'player', speed=5)
 
     # Update position and check
     projectile.update()
