@@ -56,7 +56,7 @@ class Game:
             class Target:
                 def __init__(self, pos):
                     self.pos = pos
-            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage, 'player'))
+            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage, self.player.team, is_homing=False))
 
     def update(self):
         if self.game_over:
@@ -70,13 +70,14 @@ class Game:
             self.player.gold += config.champion.gold_per_second
             self.last_gold_tick = current_time
 
+        entities = [self.player] + self.minions + self.towers
         # Update minions
         for minion in self.minions:
-            minion.update(self.player, self.projectiles)
+            minion.update(entities, self.projectiles)
 
         # Update towers
         for tower in self.towers:
-            tower.update(self.player, self.projectiles)
+            tower.update(entities, self.projectiles)
 
         # Ensure at least 1 minion of each team is alive
         blue_minions = sum(1 for m in self.minions if m.team == 'blue')
@@ -88,6 +89,7 @@ class Game:
             self.spawn_minions(1, 'red')
 
         # Update projectiles and check for collisions
+        entities = self.minions + self.towers + [self.player]
         for projectile in list(self.projectiles):
             projectile.update()
             if not self.screen_rect.colliderect(projectile.rect):
@@ -95,25 +97,23 @@ class Game:
                     self.projectiles.remove(projectile)
                 continue
 
-            if projectile.source == 'player':
-                # Check collision with minions
-                for minion in list(self.minions):
-                    if projectile.rect.colliderect(minion.rect):
-                        minion.health -= projectile.attack_damage
-                        if minion.health <= 0:
-                            self.minions.remove(minion)
-                            self.player.gold += config.minion.minion_last_hit_gold
-                        if projectile in self.projectiles:
-                            self.projectiles.remove(projectile)
-                        break
-            elif projectile.source == 'minion' or projectile.source in ['blue', 'red']:
-                # Check collision with player
-                if projectile.rect.colliderect(self.player.rect):
-                    self.player.health -= projectile.attack_damage
+            for entity in entities:
+                if projectile.rect.colliderect(entity.rect) and projectile.source != entity.team:
+                    entity.health -= projectile.attack_damage
                     if projectile in self.projectiles:
                         self.projectiles.remove(projectile)
-                    if self.player.health <= 0:
-                        self.game_over = True
+
+                    if entity.health <= 0:
+                        if isinstance(entity, Minion):
+                            self.minions.remove(entity)
+                            if projectile.source == self.player.team: # Gold for last hit
+                                self.player.gold += config.minion.minion_last_hit_gold
+                        elif isinstance(entity, Champion):
+                            self.game_over = True
+                        elif isinstance(entity, Tower):
+                            self.towers.remove(entity)
+                            # Potentially end the game or grant a large amount of gold
+                    break # Projectile hits one entity at a time
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
