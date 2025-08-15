@@ -22,7 +22,7 @@ class Game:
             self.player.move_to(event.pos)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
             mouse_pos = pygame.mouse.get_pos()
-            self.projectiles.append(Projectile(self.player.pos, mouse_pos))
+            self.projectiles.append(Projectile(self.player.pos, mouse_pos, self.player.attack_damage))
 
     def update(self):
         self.player.update()
@@ -35,8 +35,10 @@ class Game:
             else:
                 for minion in self.minions[:]:
                     if projectile.rect.colliderect(minion.rect):
+                        minion.health -= projectile.attack_damage
+                        if minion.health <= 0:
+                            self.minions.remove(minion)
                         self.projectiles.remove(projectile)
-                        self.minions.remove(minion)
                         break
 
     def draw(self, screen):

@@ -2,9 +2,10 @@ import pygame
 from .config import config
 
 class Projectile:
-    def __init__(self, pos, target_pos):
+    def __init__(self, pos, target_pos, attack_damage):
         self.pos = pygame.math.Vector2(pos)
         self.speed = config.projectile.speed
+        self.attack_damage = attack_damage
         direction = pygame.math.Vector2(target_pos) - self.pos
         if direction.length() > 0:
             direction.normalize_ip()

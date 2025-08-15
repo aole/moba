@@ -4,7 +4,12 @@ from .entity import Entity
 
 class Champion(Entity):
     def __init__(self, x, y, size=config.champion.size):
-        super().__init__(x, y, size, config.champion.image, health=50, center_aligned=True)
+        super().__init__(
+            x, y, size, config.champion.image,
+            health=config.champion.health,
+            attack_damage=config.champion.attack_damage,
+            center_aligned=True
+        )
         self.pos = pygame.math.Vector2(x, y)
         self.speed = config.champion.speed
         self.target_pos = None

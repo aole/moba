@@ -2,7 +2,9 @@
   "champion": {
     "speed": 3,
     "image": "src/assets/images/champion.png",
-    "size": 50
+    "size": 50,
+    "health": 100,
+    "attack_damage": 2
   },
   "projectile": {
     "speed": 20,
@@ -11,7 +13,9 @@
   },
   "minion": {
     "image": "src/assets/images/minion.png",
-    "size": 40
+    "size": 40,
+    "health": 10,
+    "attack_damage": 1
   },
   "game": {
     "background_image": "src/assets/images/arena.png"
