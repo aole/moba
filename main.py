@@ -4,8 +4,8 @@ from game import Game
 def main():
     pygame.init()
 
-    screen_width = 800
-    screen_height = 600
+    screen_width = 1536
+    screen_height = 1024
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("MOBA Game")
 

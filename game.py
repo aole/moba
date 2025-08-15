@@ -9,6 +9,9 @@ class Game:
         self.screen_height = screen_height
         self.screen_rect = pygame.Rect(0, 0, screen_width, screen_height)
 
+        self.background = pygame.image.load("arena.png")
+        self.background = pygame.transform.scale(self.background, (self.screen_width, self.screen_height))
+
         self.player = Champion(screen_width // 2, screen_height // 2)
         self.projectiles = []
         self.minions = [Minion(100, 100), Minion(700, 100), Minion(100, 500), Minion(700, 500)]
@@ -36,7 +39,7 @@ class Game:
                         break
 
     def draw(self, screen):
-        screen.fill((255, 255, 255))
+        screen.blit(self.background, (0, 0))
         self.player.draw(screen)
         for minion in self.minions:
             minion.draw(screen)

@@ -3,7 +3,8 @@ import pygame
 class Minion:
     def __init__(self, x, y, size=40):
         self.rect = pygame.Rect(x, y, size, size)
-        self.color = (0, 255, 0)  # Green
+        self.image = pygame.image.load("minion.png")
+        self.image = pygame.transform.scale(self.image, (size, size))
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.image, self.rect)
