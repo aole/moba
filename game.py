@@ -2,6 +2,7 @@ import pygame
 from champion import Champion
 from minion import Minion
 from projectile import Projectile
+from config import config
 
 class Game:
     def __init__(self, screen_width, screen_height):
@@ -9,7 +10,7 @@ class Game:
         self.screen_height = screen_height
         self.screen_rect = pygame.Rect(0, 0, screen_width, screen_height)
 
-        self.background = pygame.image.load("arena.png")
+        self.background = pygame.image.load(config.game.background_image)
         self.background = pygame.transform.scale(self.background, (self.screen_width, self.screen_height))
 
         self.player = Champion(screen_width // 2, screen_height // 2)

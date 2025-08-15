@@ -1,14 +1,13 @@
 import pygame
-
-PLAYER_SPEED = 5
+from config import config
 
 class Champion:
-    def __init__(self, x, y, size=50):
+    def __init__(self, x, y, size=config.champion.size):
         self.pos = pygame.math.Vector2(x, y)
         self.rect = pygame.Rect(x - size // 2, y - size // 2, size, size)
-        self.image = pygame.image.load("champion.png")
+        self.image = pygame.image.load(config.champion.image)
         self.image = pygame.transform.scale(self.image, (size, size))
-        self.speed = PLAYER_SPEED
+        self.speed = config.champion.speed
         self.target_pos = None
 
     def move_to(self, pos):
