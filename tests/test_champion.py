@@ -15,7 +15,7 @@ def test_champion_creation(mock_pygame_image_load):
     assert champion.pos == pygame.math.Vector2(100, 100)
     assert champion.rect.center == (100, 100)
     assert champion.target_pos is None
-    mock_pygame_image_load.assert_called_once_with(config.champion.image)
+    mock_pygame_image_load.assert_called_once_with(config.blue_champion.image)
 
 def test_champion_move_to(mock_pygame_image_load):
     """Test that move_to sets the target position."""
@@ -30,9 +30,9 @@ def test_champion_update_movement(mock_pygame_image_load):
     champion.move_to((10, 0))
 
     # Update multiple times to check movement
-    champion.update()
+    champion.update([], [])
     assert champion.pos.x == 1
-    champion.update()
+    champion.update([], [])
     assert champion.pos.x == 2
 
 def test_champion_reaches_destination(mock_pygame_image_load):
@@ -43,13 +43,13 @@ def test_champion_reaches_destination(mock_pygame_image_load):
 
     # Move close to the destination
     for _ in range(2):
-        champion.update()
+        champion.update([], [])
 
     assert champion.pos == pygame.math.Vector2(10, 0)
     assert champion.target_pos is None
 
     # Test that the champion doesn't move further
-    champion.update()
+    champion.update([], [])
     assert champion.pos == pygame.math.Vector2(10, 0)
 
 from src.game.game import Game
