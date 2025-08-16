@@ -2,9 +2,9 @@
   "champion": {
     "speed": 3,
     "image": "src/assets/images/champion.png",
-    "size": 50,
+    "size": 60,
     "health": 100,
-    "attack_damage": 2,
+    "attack_damage": 4,
     "attack_speed": 1.5,
     "attack_range": 200,
     "starting_gold": 100,
@@ -18,9 +18,9 @@
   "minion": {
     "speed": 2,
     "image": "src/assets/images/minion.png",
-    "size": 40,
-    "health": 10,
-    "attack_damage": 1,
+    "size": 50,
+    "health": 22,
+    "attack_damage": 2,
     "minion_last_hit_gold": 10,
     "attack_range": 150,
     "attack_interval": 3000,
@@ -33,8 +33,8 @@
     "font_path": "src/assets/chp-fire.ttf"
   },
   "tower": {
-    "health": 500,
-    "attack_damage": 5,
+    "health": 200,
+    "attack_damage": 10,
     "attack_range": 300,
     "attack_interval": 2000,
     "projectile_speed": 15,
