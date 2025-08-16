@@ -1,7 +1,18 @@
 {
-  "champion": {
+  "blue_champion": {
     "speed": 3,
     "image": "src/assets/images/champion.png",
+    "size": 60,
+    "health": 100,
+    "attack_damage": 4,
+    "attack_speed": 1.5,
+    "attack_range": 200,
+    "starting_gold": 100,
+    "gold_per_second": 1
+  },
+  "red_champion": {
+    "speed": 3,
+    "image": "src/assets/images/champion2.png",
     "size": 60,
     "health": 100,
     "attack_damage": 4,

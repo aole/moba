@@ -61,12 +61,15 @@ class Game:
 
     def setup_game(self):
         blue_tower_pos = None
+        red_tower_pos = None
         for tower_config in config.tower.locations:
             if tower_config['team'] == 'blue':
                 blue_tower_pos = pygame.math.Vector2(tower_config['x'], tower_config['y'])
-                break
+            elif tower_config['team'] == 'red':
+                red_tower_pos = pygame.math.Vector2(tower_config['x'], tower_config['y'])
 
-        self.player = Champion(self.screen_width // 2, self.screen_height // 2, 'blue', blue_tower_pos)
+        self.player = Champion(self.screen_width // 4, self.screen_height // 2, 'blue', blue_tower_pos)
+        self.red_champion = Champion(self.screen_width * 3 // 4, self.screen_height // 2, 'red', red_tower_pos)
         self.minions = []
         self.projectiles = []
         self.towers = []
@@ -133,16 +136,25 @@ class Game:
             current_time = pygame.time.get_ticks()
             if current_time - self.player.death_time >= 5000:
                 self.player.respawn()
-        else:
-            self.player.update()
+
+        if self.red_champion.is_dead:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.red_champion.death_time >= 5000:
+                self.red_champion.respawn()
 
         # Passive gold generation
         current_time = pygame.time.get_ticks()
         if current_time - self.last_gold_tick > 1000:
-            self.player.gold += config.champion.gold_per_second
+            self.player.gold += config.blue_champion.gold_per_second
+            self.red_champion.gold += config.red_champion.gold_per_second
             self.last_gold_tick = current_time
 
-        entities = [self.player] + self.minions + self.towers
+        entities = [self.player, self.red_champion] + self.minions + self.towers
+        if not self.player.is_dead:
+            self.player.update(entities, self.projectiles)
+        if not self.red_champion.is_dead:
+            self.red_champion.update(entities, self.projectiles)
+
         # Update minions
         for minion in self.minions:
             minion.update(entities, self.projectiles)
@@ -161,7 +173,7 @@ class Game:
             self.spawn_minions(1, 'red')
 
         # Update projectiles and check for collisions
-        entities = self.minions + self.towers + [self.player]
+        entities = self.minions + self.towers + [self.player, self.red_champion]
         for projectile in list(self.projectiles):
             projectile.update()
             if projectile.should_be_removed:
@@ -210,6 +222,8 @@ class Game:
     def draw_playing_screen(self, screen):
         if not self.player.is_dead:
             self.player.draw(screen)
+        if not self.red_champion.is_dead:
+            self.red_champion.draw(screen)
         for minion in self.minions:
             minion.draw(screen)
         for projectile in self.projectiles:

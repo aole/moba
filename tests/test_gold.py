@@ -15,7 +15,7 @@ def game():
 
 class TestGoldSystem:
     def test_starting_gold(self, game):
-        assert game.player.gold == config.champion.starting_gold
+        assert game.player.gold == config.blue_champion.starting_gold
 
     def test_passive_gold_generation(self, game, mocker):
         mocker.patch('pygame.time.get_ticks', return_value=0)
@@ -26,6 +26,6 @@ class TestGoldSystem:
         mocker.patch('pygame.time.get_ticks', return_value=1001)
         game.update()
 
-        expected_gold = initial_gold + config.champion.gold_per_second
+        expected_gold = initial_gold + config.blue_champion.gold_per_second
         assert game.player.gold == expected_gold
 
