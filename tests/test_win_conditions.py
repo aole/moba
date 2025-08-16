@@ -9,8 +9,8 @@ def test_red_tower_destruction_ends_game():
     pygame.init()
     game = Game(1536, 1024) # Use full screen size
     game.setup_game()
-    game.player.update = lambda e, p: None
-    game.red_champion.update = lambda e, p: None
+    game.player.update = lambda e, p, ef: None
+    game.red_champion.update = lambda e, p, ef: None
     game.state = GameState.PLAYING
 
     # Find the red tower
@@ -39,8 +39,8 @@ def test_blue_tower_destruction_ends_game():
     pygame.init()
     game = Game(1536, 1024) # Use full screen size
     game.setup_game()
-    game.player.update = lambda e, p: None
-    game.red_champion.update = lambda e, p: None
+    game.player.update = lambda e, p, ef: None
+    game.red_champion.update = lambda e, p, ef: None
     game.state = GameState.PLAYING
 
     # Find the blue tower

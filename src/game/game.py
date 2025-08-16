@@ -7,6 +7,7 @@ from .tower import Tower
 from .config import config
 from .state import GameState
 from .button import Button
+from .effect import Effect
 
 class Game:
     def __init__(self, screen_width, screen_height):
@@ -22,6 +23,7 @@ class Game:
         self.state = GameState.START
         self.projectiles = []
         self.towers = []
+        self.effects = pygame.sprite.Group()
         self.running = True
         self.winner = None
 
@@ -73,6 +75,7 @@ class Game:
         self.minions = []
         self.projectiles = []
         self.towers = []
+        self.effects = pygame.sprite.Group()
         self.last_gold_tick = pygame.time.get_ticks()
         self.state = GameState.PLAYING
         self.winner = None
@@ -114,7 +117,7 @@ class Game:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
             mouse_pos = pygame.mouse.get_pos()
             direction = pygame.math.Vector2(mouse_pos) - self.player.pos
-            self.projectiles.append(Projectile(self.player.pos.copy(), self.player.attack_damage, self.player.team, self.player, direction=direction))
+            self.player.attack(self.projectiles, self.effects, direction=direction)
 
     def handle_pause_input(self, event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -149,17 +152,17 @@ class Game:
 
         entities = [self.player, self.red_champion] + self.minions + self.towers
         if not self.player.is_dead:
-            self.player.update(entities, self.projectiles)
+            self.player.update(entities, self.projectiles, self.effects)
         if not self.red_champion.is_dead:
-            self.red_champion.update(entities, self.projectiles)
+            self.red_champion.update(entities, self.projectiles, self.effects)
 
         # Update minions
         for minion in self.minions:
-            minion.update(entities, self.projectiles)
+            minion.update(entities, self.projectiles, self.effects)
 
         # Update towers
         for tower in self.towers:
-            tower.update(entities, self.projectiles)
+            tower.update(entities, self.projectiles, self.effects)
 
         # Ensure at least 1 minion of each team is alive
         blue_minions = sum(1 for m in self.minions if m.team == 'blue')
@@ -219,6 +222,9 @@ class Game:
         self.minions = [m for m in self.minions if not m.is_dead]
         self.towers = [t for t in self.towers if not t.is_dead]
 
+        # Update effects
+        self.effects.update()
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
 
@@ -244,6 +250,7 @@ class Game:
             projectile.draw(screen)
         for tower in self.towers:
             tower.draw(screen)
+        self.effects.draw(screen)
         self.draw_status_bar(screen)
 
     def draw_status_bar(self, screen):

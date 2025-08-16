@@ -1,7 +1,7 @@
 import pygame
 from .config import config
 from .entity import Entity
-
+from .effect import Effect
 class Champion(Entity):
     def __init__(self, x, y, team, tower_pos):
         champion_config = config.blue_champion if team == 'blue' else config.red_champion
@@ -35,14 +35,14 @@ class Champion(Entity):
     def move_to(self, pos):
         self.target_pos = pygame.math.Vector2(pos)
 
-    def update(self, entities, projectiles):
+    def update(self, entities, projectiles, effects):
         if self.team == 'red':
             # AI for red champion
             target = self.find_closest_enemy(entities)
             if target:
                 distance = self.pos.distance_to(target.pos)
                 if distance < self.attack_range:
-                    self.attack(target, projectiles)
+                    self.attack(projectiles, effects, target=target)
                 else:
                     self.move_to(target.pos)
 
@@ -68,12 +68,13 @@ class Champion(Entity):
                     closest_enemy = entity
         return closest_enemy
 
-    def attack(self, target, projectiles):
+    def attack(self, projectiles, effects, target=None, direction=None):
         from .projectile import Projectile
         current_time = pygame.time.get_ticks()
         if current_time - self.last_attack_time > 1000 / self.attack_speed:
-            projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=target))
             self.last_attack_time = current_time
+            projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=target, direction=direction))
+            effects.add(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
 
     def draw(self, screen):
         super().draw(screen)
