@@ -113,10 +113,8 @@ class Game:
             self.player.move_to(event.pos)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
             mouse_pos = pygame.mouse.get_pos()
-            class Target:
-                def __init__(self, pos):
-                    self.pos = pos
-            self.projectiles.append(Projectile(self.player.pos.copy(), Target(pygame.math.Vector2(mouse_pos)), self.player.attack_damage, self.player.team, is_homing=False))
+            direction = pygame.math.Vector2(mouse_pos) - self.player.pos
+            self.projectiles.append(Projectile(self.player.pos.copy(), self.player.attack_damage, self.player.team, direction=direction))
 
     def handle_pause_input(self, event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:

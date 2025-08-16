@@ -24,11 +24,7 @@ def test_red_tower_destruction_ends_game():
     red_tower.health = 1 # Set health to 1 so one hit will destroy it
 
     # Create a projectile that will hit the tower
-    class Target:
-        def __init__(self, pos):
-            self.pos = pos
-
-    projectile = Projectile(red_tower.pos, Target(red_tower.pos), 1, 'blue', is_homing=False)
+    projectile = Projectile(pos=red_tower.pos, attack_damage=1, source='blue', target=red_tower)
     game.projectiles.append(projectile)
 
     game.update()
@@ -55,11 +51,7 @@ def test_blue_tower_destruction_ends_game():
     # Destroy the blue tower
     blue_tower.health = 1 # Set health to 1 so one hit will destroy it
 
-    class Target:
-        def __init__(self, pos):
-            self.pos = pos
-
-    projectile = Projectile(blue_tower.pos, Target(blue_tower.pos), 1, 'red', is_homing=False)
+    projectile = Projectile(pos=blue_tower.pos, attack_damage=1, source='red', target=blue_tower)
     game.projectiles.append(projectile)
     game.update()
 
