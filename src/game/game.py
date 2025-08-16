@@ -7,6 +7,7 @@ from .tower import Tower
 from .config import config
 from .state import GameState
 from .button import Button
+from .effect import Effect
 
 class Game:
     def __init__(self, screen_width, screen_height):
@@ -22,6 +23,7 @@ class Game:
         self.state = GameState.START
         self.projectiles = []
         self.towers = []
+        self.effects = []
         self.running = True
         self.winner = None
 
@@ -73,6 +75,7 @@ class Game:
         self.minions = []
         self.projectiles = []
         self.towers = []
+        self.effects = []
         self.last_gold_tick = pygame.time.get_ticks()
         self.state = GameState.PLAYING
         self.winner = None
@@ -149,17 +152,17 @@ class Game:
 
         entities = [self.player, self.red_champion] + self.minions + self.towers
         if not self.player.is_dead:
-            self.player.update(entities, self.projectiles)
+            self.player.update(entities, self.projectiles, self.effects)
         if not self.red_champion.is_dead:
-            self.red_champion.update(entities, self.projectiles)
+            self.red_champion.update(entities, self.projectiles, self.effects)
 
         # Update minions
         for minion in self.minions:
-            minion.update(entities, self.projectiles)
+            minion.update(entities, self.projectiles, self.effects)
 
         # Update towers
         for tower in self.towers:
-            tower.update(entities, self.projectiles)
+            tower.update(entities, self.projectiles, self.effects)
 
         # Ensure at least 1 minion of each team is alive
         blue_minions = sum(1 for m in self.minions if m.team == 'blue')
@@ -219,6 +222,13 @@ class Game:
         self.minions = [m for m in self.minions if not m.is_dead]
         self.towers = [t for t in self.towers if not t.is_dead]
 
+        # Update effects
+        for effect in list(self.effects):
+            effect.update()
+            current_time = pygame.time.get_ticks()
+            if current_time - effect.created_at > effect.duration:
+                self.effects.remove(effect)
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
 
@@ -244,6 +254,8 @@ class Game:
             projectile.draw(screen)
         for tower in self.towers:
             tower.draw(screen)
+        for effect in self.effects:
+            effect.draw(screen)
         self.draw_status_bar(screen)
 
     def draw_status_bar(self, screen):

@@ -30,9 +30,9 @@ def test_champion_update_movement(mock_pygame_image_load):
     champion.move_to((10, 0))
 
     # Update multiple times to check movement
-    champion.update([], [])
+    champion.update([], [], [])
     assert champion.pos.x == 1
-    champion.update([], [])
+    champion.update([], [], [])
     assert champion.pos.x == 2
 
 def test_champion_reaches_destination(mock_pygame_image_load):
@@ -43,13 +43,13 @@ def test_champion_reaches_destination(mock_pygame_image_load):
 
     # Move close to the destination
     for _ in range(2):
-        champion.update([], [])
+        champion.update([], [], [])
 
     assert champion.pos == pygame.math.Vector2(10, 0)
     assert champion.target_pos is None
 
     # Test that the champion doesn't move further
-    champion.update([], [])
+    champion.update([], [], [])
     assert champion.pos == pygame.math.Vector2(10, 0)
 
 from src.game.game import Game

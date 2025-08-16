@@ -64,5 +64,12 @@
     "minion_range_visible": true,
     "champion_range_visible": true,
     "tower_range_visible": true
+  },
+  "effect": {
+    "flash": {
+      "size": 30,
+      "color": [255, 255, 0],
+      "duration": 200
+    }
   }
 }

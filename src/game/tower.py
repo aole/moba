@@ -2,6 +2,7 @@ import pygame
 from .config import config
 from .entity import Entity
 from .projectile import Projectile
+from .effect import Effect
 
 class Tower(Entity):
     def __init__(self, x, y, team):
@@ -21,7 +22,7 @@ class Tower(Entity):
         self.pos = pygame.math.Vector2(x, y)
         self.last_attack_time = 0
 
-    def update(self, entities, projectiles):
+    def update(self, entities, projectiles, effects):
         closest_enemy = None
         min_distance = float('inf')
 
@@ -40,6 +41,7 @@ class Tower(Entity):
             if current_time - self.last_attack_time > config.tower.attack_interval:
                 self.last_attack_time = current_time
                 projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=closest_enemy, speed=config.tower.projectile_speed, size=config.tower.projectile_size, color=config.tower.projectile_color))
+                effects.append(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
 
     def draw(self, screen):
         super().draw(screen)
