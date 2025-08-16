@@ -39,7 +39,7 @@ class Tower(Entity):
             current_time = pygame.time.get_ticks()
             if current_time - self.last_attack_time > config.tower.attack_interval:
                 self.last_attack_time = current_time
-                projectiles.append(Projectile(self.pos.copy(), closest_enemy, self.attack_damage, self.team, config.tower.projectile_speed, config.tower.projectile_size, config.tower.projectile_color))
+                projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, target=closest_enemy, speed=config.tower.projectile_speed, size=config.tower.projectile_size, color=config.tower.projectile_color))
 
     def draw(self, screen):
         super().draw(screen)

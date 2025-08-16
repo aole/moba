@@ -17,6 +17,11 @@ class Entity:
         self.health = health
         self.attack_damage = attack_damage
         self.team = team
+        self.is_dead = False
+
+    def die(self):
+        self.is_dead = True
+        self.health = 0
 
     def draw(self, screen):
         # Draw health bar
