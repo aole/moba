@@ -1,27 +1,32 @@
 import pygame
 
-class Effect:
+class Effect(pygame.sprite.Sprite):
     def __init__(self, pos, size, color, duration):
-        self.pos = pos
-        self.size = size
+        super().__init__()
+        self.duration = duration  # milliseconds
+        self.start_time = pygame.time.get_ticks()
+
+        self.radius = size
         self.color = color
-        self.duration = duration
-        self.created_at = pygame.time.get_ticks()
+
+        # Create a glow surface with alpha
+        self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, self.color, (self.radius, self.radius), self.radius)
+        self.rect = self.image.get_rect(center=pos)
 
     def update(self):
-        pass
-
-    def draw(self, screen):
-        current_time = pygame.time.get_ticks()
-        elapsed_time = current_time - self.created_at
-        if elapsed_time > self.duration:
+        # How long has the flash been alive
+        elapsed = pygame.time.get_ticks() - self.start_time
+        if elapsed > self.duration:
+            self.kill()
             return
 
-        # Fade effect
-        alpha = 255 * (1 - (elapsed_time / self.duration))
-        if alpha < 0:
-            alpha = 0
+        # Fade out over time
+        alpha = 255 * (1 - elapsed / self.duration)
+        self.image.fill((0, 0, 0, 0))  # clear
+        pygame.draw.circle(self.image, (*self.color, int(alpha)), (self.radius, self.radius), self.radius)
 
-        surface = pygame.Surface((self.size * 2, self.size * 2), pygame.SRCALPHA)
-        pygame.draw.circle(surface, (*self.color, alpha), (self.size, self.size), self.size)
-        screen.blit(surface, (self.pos.x - self.size, self.pos.y - self.size))
+    def draw(self, screen):
+        # This draw method is not strictly necessary if using sprite groups to draw,
+        # but can be useful for debugging or alternative drawing methods.
+        screen.blit(self.image, self.rect)

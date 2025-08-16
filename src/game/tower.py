@@ -41,7 +41,7 @@ class Tower(Entity):
             if current_time - self.last_attack_time > config.tower.attack_interval:
                 self.last_attack_time = current_time
                 projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=closest_enemy, speed=config.tower.projectile_speed, size=config.tower.projectile_size, color=config.tower.projectile_color))
-                effects.append(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
+                effects.add(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
 
     def draw(self, screen):
         super().draw(screen)

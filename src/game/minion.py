@@ -47,7 +47,7 @@ class Minion(Entity):
             if current_time - self.last_attack_time > config.minion.attack_interval:
                 self.last_attack_time = current_time
                 projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=attack_target, speed=config.minion.projectile_speed, size=config.minion.projectile_size, color=config.minion.projectile_color))
-                effects.append(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
+                effects.add(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
         else:
             # No enemy in attack range, so move
             movement_target = tower_target if tower_target else attack_target

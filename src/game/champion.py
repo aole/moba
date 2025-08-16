@@ -73,7 +73,7 @@ class Champion(Entity):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_attack_time > 1000 / self.attack_speed:
             projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=target))
-            effects.append(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
+            effects.add(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
             self.last_attack_time = current_time
 
     def draw(self, screen):
