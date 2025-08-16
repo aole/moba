@@ -18,6 +18,7 @@ class Entity:
         self.attack_damage = attack_damage
         self.team = team
         self.is_dead = False
+        self.recent_attackers = {}
 
     def die(self):
         self.is_dead = True

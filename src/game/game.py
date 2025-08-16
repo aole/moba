@@ -114,7 +114,7 @@ class Game:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
             mouse_pos = pygame.mouse.get_pos()
             direction = pygame.math.Vector2(mouse_pos) - self.player.pos
-            self.projectiles.append(Projectile(self.player.pos.copy(), self.player.attack_damage, self.player.team, direction=direction))
+            self.projectiles.append(Projectile(self.player.pos.copy(), self.player.attack_damage, self.player.team, self.player, direction=direction))
 
     def handle_pause_input(self, event):
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -184,15 +184,31 @@ class Game:
                 continue
 
             for entity in entities:
-                if projectile.rect.colliderect(entity.rect) and projectile.source != entity.team and not entity.is_dead:
+                if projectile.rect.colliderect(entity.rect) and projectile.team != entity.team and not entity.is_dead:
                     entity.health -= projectile.attack_damage
+                    entity.recent_attackers[projectile.attacker] = pygame.time.get_ticks()
+
                     if projectile in self.projectiles:
                         self.projectiles.remove(projectile)
 
                     if entity.health <= 0:
                         entity.die()
+
+                        if isinstance(entity, Champion):
+                            killer = projectile.attacker
+                            if isinstance(killer, Champion):
+                                killer.kills += 1
+
+                            current_time = pygame.time.get_ticks()
+                            for attacker, last_attack_time in entity.recent_attackers.items():
+                                if attacker != killer and current_time - last_attack_time < 10000: # 10 seconds assist window
+                                    if isinstance(attacker, Champion):
+                                        attacker.assists += 1
+                            entity.recent_attackers = {}
+
+
                         if isinstance(entity, Minion):
-                            if projectile.source == self.player.team: # Gold for last hit
+                            if projectile.attacker == self.player: # Gold for last hit
                                 self.player.gold += config.minion.minion_last_hit_gold
                         elif isinstance(entity, Tower):
                             self.state = GameState.GAME_OVER
@@ -235,6 +251,7 @@ class Game:
         stats = [
             f"Gold: {self.player.gold}",
             f"Health: {self.player.health}",
+            f"KDA: {self.player.kills}/{self.player.deaths}/{self.player.assists}",
             f"Attack Damage: {self.player.attack_damage}",
             f"Attack Speed: {self.player.attack_speed}"
         ]

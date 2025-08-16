@@ -26,7 +26,7 @@ def test_red_tower_destruction_ends_game():
     red_tower.health = 1 # Set health to 1 so one hit will destroy it
 
     # Create a projectile that will hit the tower
-    projectile = Projectile(pos=red_tower.pos, attack_damage=1, source='blue', target=red_tower)
+    projectile = Projectile(pos=red_tower.pos, attack_damage=1, team='blue', attacker=game.player, target=red_tower)
     game.projectiles.append(projectile)
 
     game.update()
@@ -55,7 +55,7 @@ def test_blue_tower_destruction_ends_game():
     # Destroy the blue tower
     blue_tower.health = 1 # Set health to 1 so one hit will destroy it
 
-    projectile = Projectile(pos=blue_tower.pos, attack_damage=1, source='red', target=blue_tower)
+    projectile = Projectile(pos=blue_tower.pos, attack_damage=1, team='red', attacker=game.red_champion, target=blue_tower)
     game.projectiles.append(projectile)
     game.update()
 

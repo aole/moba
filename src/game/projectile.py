@@ -2,10 +2,11 @@ import pygame
 from .config import config
 
 class Projectile:
-    def __init__(self, pos, attack_damage, source, target=None, direction=None, speed=None, size=None, color=None):
+    def __init__(self, pos, attack_damage, team, attacker, target=None, direction=None, speed=None, size=None, color=None):
         self.pos = pygame.math.Vector2(pos)
         self.attack_damage = attack_damage
-        self.source = source
+        self.team = team
+        self.attacker = attacker
         self.target = target
         self.speed = speed or config.projectile.speed
         self.size = size or config.projectile.size
