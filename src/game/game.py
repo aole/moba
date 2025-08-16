@@ -177,31 +177,31 @@ class Game:
             if projectile.should_be_removed:
                 self.projectiles.remove(projectile)
                 continue
-                
+
             if not self.screen_rect.colliderect(projectile.rect):
                 if projectile in self.projectiles:
                     self.projectiles.remove(projectile)
                 continue
 
             for entity in entities:
-                if projectile.rect.colliderect(entity.rect) and projectile.source != entity.team:
+                if projectile.rect.colliderect(entity.rect) and projectile.source != entity.team and not entity.is_dead:
                     entity.health -= projectile.attack_damage
                     if projectile in self.projectiles:
                         self.projectiles.remove(projectile)
 
                     if entity.health <= 0:
+                        entity.die()
                         if isinstance(entity, Minion):
-                            self.minions.remove(entity)
                             if projectile.source == self.player.team: # Gold for last hit
                                 self.player.gold += config.minion.minion_last_hit_gold
-                        elif isinstance(entity, Champion):
-                            if not entity.is_dead:
-                                entity.die()
                         elif isinstance(entity, Tower):
-                            self.towers.remove(entity)
                             self.state = GameState.GAME_OVER
                             self.winner = 'blue' if entity.team == 'red' else 'red'
-                    break # Projectile hits one entity at a time
+                    break  # Projectile hits one entity at a time
+
+        # Remove dead entities
+        self.minions = [m for m in self.minions if not m.is_dead]
+        self.towers = [t for t in self.towers if not t.is_dead]
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
