@@ -45,7 +45,7 @@ class Minion(Entity):
             current_time = pygame.time.get_ticks()
             if current_time - self.last_attack_time > config.minion.attack_interval:
                 self.last_attack_time = current_time
-                projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, target=attack_target, speed=config.minion.projectile_speed, size=config.minion.projectile_size, color=config.minion.projectile_color))
+                projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=attack_target, speed=config.minion.projectile_speed, size=config.minion.projectile_size, color=config.minion.projectile_color))
         else:
             # No enemy in attack range, so move
             movement_target = tower_target if tower_target else attack_target

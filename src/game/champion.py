@@ -22,6 +22,9 @@ class Champion(Entity):
         self.death_time = None
         self.start_pos = pygame.math.Vector2(x, y)
         self.last_attack_time = 0
+        self.kills = 0
+        self.deaths = 0
+        self.assists = 0
 
         if tower_pos:
             offset = pygame.math.Vector2(config.tower.respawn_offset.x, config.tower.respawn_offset.y)
@@ -69,7 +72,7 @@ class Champion(Entity):
         from .projectile import Projectile
         current_time = pygame.time.get_ticks()
         if current_time - self.last_attack_time > 1000 / self.attack_speed:
-            projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, target=target))
+            projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=target))
             self.last_attack_time = current_time
 
     def draw(self, screen):
@@ -79,9 +82,9 @@ class Champion(Entity):
             pygame.draw.circle(screen, (255, 255, 255), self.rect.center, champion_config.attack_range, 1)
 
     def die(self):
-        self.is_dead = True
+        super().die()
+        self.deaths += 1
         self.death_time = pygame.time.get_ticks()
-        self.health = 0
 
     def respawn(self):
         self.is_dead = False

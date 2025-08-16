@@ -13,7 +13,7 @@ def test_projectile_off_screen():
 
     # Create a projectile that is already off-screen
     direction = pygame.math.Vector2(-1, -1)
-    projectile = Projectile(pos=pygame.math.Vector2(-20, -20), attack_damage=1, source='player', direction=direction)
+    projectile = Projectile(pos=pygame.math.Vector2(-20, -20), attack_damage=1, team='player', attacker=game.player, direction=direction)
     game.projectiles.append(projectile)
 
     assert len(game.projectiles) == 1
@@ -40,7 +40,7 @@ def test_projectile_damages_minion():
     game.minions.append(minion)
 
     # The champion's attack damage is from the config, so the projectile will have that damage
-    projectile = Projectile(pos=pygame.math.Vector2(90, 100), attack_damage=game.player.attack_damage, source='player', target=minion)
+    projectile = Projectile(pos=pygame.math.Vector2(90, 100), attack_damage=game.player.attack_damage, team='player', attacker=game.player, target=minion)
     projectile.rect = pygame.Rect(95, 95, 10, 10) # Ensure collision
     game.projectiles.append(projectile)
 
@@ -57,7 +57,7 @@ def test_projectile_damages_minion():
     for i in range(1, hits_to_kill):
         if minion not in game.minions:
             break
-        projectile = Projectile(pos=pygame.math.Vector2(90, 100), attack_damage=game.player.attack_damage, source='player', target=minion)
+        projectile = Projectile(pos=pygame.math.Vector2(90, 100), attack_damage=game.player.attack_damage, team='player', attacker=game.player, target=minion)
         projectile.rect = pygame.Rect(95, 95, 10, 10)
         game.projectiles.append(projectile)
         game.update()

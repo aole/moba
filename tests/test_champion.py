@@ -74,7 +74,8 @@ def test_champion_respawn(mocker, mock_pygame_image_load):
     class FakeProjectile:
         def __init__(self, target):
             self.rect = target.rect
-            self.source = 'red' # Enemy team
+            self.team = 'red' # Enemy team
+            self.attacker = None
             self.attack_damage = 1
             self.should_be_removed = False
         def update(self):
