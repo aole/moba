@@ -29,7 +29,7 @@ class Tower(Entity):
         # In this implementation, we simply find the closest enemy.
         # A more advanced implementation could prioritize minions.
         for entity in entities:
-            if entity.team != self.team:
+            if entity.team != self.team and not getattr(entity, 'is_dead', False):
                 distance = self.pos.distance_to(entity.pos)
                 if distance < min_distance:
                     min_distance = distance
