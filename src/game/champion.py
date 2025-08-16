@@ -42,7 +42,7 @@ class Champion(Entity):
             if target:
                 distance = self.pos.distance_to(target.pos)
                 if distance < self.attack_range:
-                    self.attack(target, projectiles, effects)
+                    self.attack(projectiles, effects, target=target)
                 else:
                     self.move_to(target.pos)
 
@@ -68,13 +68,13 @@ class Champion(Entity):
                     closest_enemy = entity
         return closest_enemy
 
-    def attack(self, target, projectiles, effects):
+    def attack(self, projectiles, effects, target=None, direction=None):
         from .projectile import Projectile
         current_time = pygame.time.get_ticks()
         if current_time - self.last_attack_time > 1000 / self.attack_speed:
-            projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=target))
-            effects.add(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
             self.last_attack_time = current_time
+            projectiles.append(Projectile(self.pos.copy(), self.attack_damage, self.team, self, target=target, direction=direction))
+            effects.add(Effect(self.pos.copy(), config.effect.flash.size, tuple(config.effect.flash.color), config.effect.flash.duration))
 
     def draw(self, screen):
         super().draw(screen)
